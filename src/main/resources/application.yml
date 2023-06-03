@@ -20,14 +20,22 @@ spring:
             preLogger: true
             postLogger: true
       routes:
-#        - id: user-service
-#          uri: lb://USER-SERVICE
-#          predicates:
-#            - Path=/user-service/login
-#            - Method=POST
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: coupon-service
+          uri: lb://COUPON-SERVICE
+          predicates:
+            - Path=/coupon-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/coupon-service/(?<segment>.*), /$\{segment}
+        - id: front-service
+          uri: lb://FRONT-SERVICE
+          predicates:
+            - Path=/front-service/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/front-service/(?<segment>.*), /$\{segment}
 #
 #        - id: user-service
 #          uri: lb://USER-SERVICE
@@ -67,8 +75,8 @@ spring:
 #            - Path=/order-service/**
 
 
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: refresh, health, beans, httptrace
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace
